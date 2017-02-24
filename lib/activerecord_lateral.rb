@@ -1,4 +1,8 @@
-ActiveRecord::Associations::Builder::Association.valid_options << :lateral
+ActiveRecord::Associations::Builder::Association.class_eval do
+  def valid_options(options)
+    VALID_OPTIONS + [:lateral] + Association.extensions.flat_map(&:valid_options)
+  end
+end
 
 ActiveRecord::Associations::Preloader::Association.class_eval do
   def records_for(ids)
